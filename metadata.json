@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Sahara Braids",
+  "description": "MOSES - Authentische Flechtkunst in Steyr (Haratzmüllerstr. 19, 4400 Steyr). Braiding salon portfolio, services, booking, and contact.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
