@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useState } from 'react';
 import { X } from 'lucide-react';
 
-const WHATSAPP_NUMBER = '67799015819';
+const WHATSAPP_NUMBER = '4367799015819';
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 export const WhatsAppButton = () => {

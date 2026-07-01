@@ -104,8 +104,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                 </div>
                 <div>
                   <h3 className="font-serif text-xl font-semibold text-[#3a302a] mb-1">{t.contactInfoHeader}</h3>
-                  <a href="tel:67799015819" className="hover:text-[#c2652a] block mb-1 font-medium text-base text-[#c2652a]">
-                    Tel. 67799015819
+                  <a href="tel:+4367799015819" className="hover:text-[#c2652a] block mb-1 font-medium text-base text-[#c2652a]">
+                    +43 677 99015819
                   </a>
                 </div>
               </motion.div>
