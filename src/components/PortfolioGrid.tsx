@@ -3,6 +3,7 @@ import { ZoomIn, X, Clock, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Language, PortfolioCategory, PortfolioItem, View } from '../types';
 import { DICTIONARY, PORTFOLIO_ITEMS } from '../data/content';
+import { FannedGallery } from './FannedGallery';
 
 interface PortfolioGridProps {
   lang: Language;
@@ -47,6 +48,9 @@ export const PortfolioGrid: React.FC<PortfolioGridProps> = ({ lang, onSelectView
             <motion.p key="p" variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease } } }} className="text-[#605850] text-base font-light leading-relaxed">{t.subtitle}</motion.p>
           ]}
         </motion.div>
+
+        {/* Scroll-driven fanned gallery */}
+        <FannedGallery lang={lang} />
 
         {/* Filter Pills */}
         <motion.div

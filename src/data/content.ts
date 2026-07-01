@@ -1,7 +1,7 @@
 import { PortfolioItem, ServiceItem, Testimonial } from '../types';
 
-// Real Moses Braids salon photos served from Google Drive
-const GD = (id: string) => `https://lh3.googleusercontent.com/d/${id}`;
+// Real Moses Braids salon photos served from Google Drive (public thumbnail endpoint)
+const GD = (id: string) => `https://drive.google.com/thumbnail?id=${id}&sz=w1600`;
 
 export const IMAGES = {
   heroPortrait:      GD('1C4EBkij6GCiIse6rIGzp7q1SoYQhY4V1'), // WA0054 – 440KB
