@@ -1,22 +1,25 @@
 import { PortfolioItem, ServiceItem, Testimonial } from '../types';
 
+// Real Moses Braids salon photos served from Google Drive
+const GD = (id: string) => `https://lh3.googleusercontent.com/d/${id}`;
+
 export const IMAGES = {
-  heroPortrait: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAyYrJ06cioFo64lbN0Bk2H1-keDV_Wso6eQAl5HiPKYJiUVzKeo6Rf7pbYDEHEYC4_6hIE10sxcq9eDeV4QzxgKlNtEPd_070IVTpi_SsCsjdcJ56jkCig58adp2vOzU_qBAlW1K6R07eQ1RDa_QlF51EHBqXiZZmtoeZUCFtZ6kPXcE5gUmT2Q4wqTAhivdRbUtnCcsSaa7W6CLEx-1ICFLmiIUcfaQUs5O9LTDTVjdpkMgMWwuApLwluFPVr7YvNehmTeTocY5Q',
-  heroCornrows: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBCm9W9cttdeA8_-40rgv56xjghXEtQI5xGOi3RTj2oXhV49oHI-MWSHd0MTVXoztB151eZvfeslX4hxFkVQg33BVEYlH5IBf0coNHl-HngKCPqrr5GfkaJRNK7iaHh8HQI2Ihy8YjI1FQLX9jvqmk0HUGHLtvmzrfXqOrb8feCyYk2BD5ncuOlOXFWYxPz5wDB2WeFW4olZ5YYTZB0nOYuFp5lf-IDvNn0vIj4Fyy0Osv2LTj4WSXpAZCaqn5qrlZ6ZDXGrr5x-iY',
-  knotlessSpec: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBRdfeQIJ3ZQwFzv3P9XK8CAoiaOKdS8KLWx34_b_tcsIVZQ7TpsCpT-iSaL7gqe_9hd_JxKL3xL0fC3q8GkTjpwM5qGwM_wibz1AYDNtmUoDgWEVO8d0TRP6F4D0xjYjeDht7EARotlLnMeKEKNhG9UTfLpWTjcwe1sDWCg6dJxdsrLlvmTXwY-YRHbc6GnPk-jY2FzFBP6ZLlTHQpjuM0tz9sIWoLn13oGtBAfaPh_OYssiMMFk49cxNrYNTLRzmOHoy5HN3zbI',
-  cornrowsSpec: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDmmvGSQqAP2Etrfda0htQLog3-IzbUC3e9gHJ3vTLWFO7Mq1nVzSNMhatjk2B-y3XSb-5yZZpTtV_w0Ad9xvH7TRKLwv0LTbk8agsNYJTdVqQ6BVmByAvqpijvfnq1ZW7fgRxVPh4VnNkFc9gJTInVYwzcicJ3xELKaA-8U19Gr5zzMmbLzAwtly4KHT2S7HK1-jvZN3AYjYEEdsMJJhrzyLob9amGK2Jsv20rP1JMjqbewYSDRMn5p8qdiHrHKC6WCG8oqQwOnmo',
-  passionTwistsSpec: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDz8XSDwUAck7Hin5Ujhi8TfyeKVzlaD7toZJMBcLxHjrGnKSoPDV_GWaAiNmlMRuZBJZB2XH1Jz1lmCAvvVS8Be1BjCIDempUxDN-YeMwR97FvOF7_T2gBMZJ_ZEa69KIfiQw_VpXv_MjkQymXOEzOxnK7kw49xvCRZ_JvC8X_CqGQmszC5mw7OnpZvbZVuL4x9DVg8fxpaekOZX7wFYk7zmWTggNOAhNRHyxz2TUAFnDuSHX0NJvcg55TWkAMz6lXZhTcNYnhO58',
-  studioInterior: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC0eW9AdH8nRTfJQ-Ep3lbvmvLYj_yWUSHAeItPTeWfAiwyGwASpaFFY3tLF5Ar1GnywFAFtzci73TqT4-ggMamPtEfOHKIa5p4n7eCTqPEzZPlqiu7VGfrwpQ2k5EIKGRXDu4AaKHKZMO9rjSNHPiPfXMA_mkoUOGkPHev6Zv4-NBKZqwE6B1zzCu5LgLLe2K2bEKY0-D05eFElsl6duxZ4WA3GKzTOSBrKZALQH7S4iiFsGPBrtGPeN8G2yVQpfxCKrotxNaKUN0',
-  gildedKnotless: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAeb8Q8sNB1WW1saST5F2V9j4ElIc_QKCGAcfEQyBaMxZdDy2L56wy2k4kUEsxNfhyaOjYPNkEgChgwEh2gCcs7z380EVgxrijxh3_tqXKH0sTaFVYwkdUa-hyZnl_PjwqFSWrA459HX5ldLPu3SeyRd5WobVYltqV6syt-X-l9F1HP5N67_iDPUBChFnM1cMh9szWuTbEp2vXyh_6kBIhkECQ13ylKIrwPKPdJ7OHp2UEb_TWr9ZCdtunlUrhhGjdf7QGSe7RgNj0',
-  linearGeometry: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBXLsuC5W6J1VXUToQ29dTkVKJHA5e-8nrocCjGKIIGbOzkEFFvNpbtXNrdC9fNfuqWGRKNWBW0eMDqODpIDvGmWjFuikXkbK3Pi_xRPc7HVikDw5z4Ra5-FCh6x_DRef2rgz-2r2qOa2swdaYU2Oac0e_SSsApOzeLW0zOjqwaYLsGL38MNQ2fb2ym37CtXwmTNJGAQgWPJQzmgEUda7QxdaKthfrvzg4pQE2hdzL_yW3M0jAUTvgRQIE2vi6UxOVtCyO22g6dZJQ',
-  honeyBoxBraids: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAFacDPw6ZflFsMgW-kjZy8l-m2Oenq3U7CY_P71ScoS72rDKf3_DnjgTre0xnwTFSx2rHYqvL4qtcbEhFGwtTTVkhYdWUs54psi0feBlE3-YK20R5whpTwOYvmPjFba-WN8_7PErkM8t-QJXZn5n58DwewgckRO8qmvsfFg7PCI2rKpKKuHhZ39BkihTgK790PQKhDbC2MxVk1JuzulQTMP0MJsORjXGterOWNmYBkF5oT21kiqOYzMzRUpm2QbG396KjvfZfqhw',
-  artisanDetails: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDsEfW0mG7zPQ-ZygYjpwbMC66NHoB7dM4XAc6xsIg_F9d-4hxI-vEg1S3w1M1oS5qJsigHH9vNHKuCqfEa6E-PIx3t7EEzEuMFs9AnlZZ6f_ixClblyYFXeY-jxUOyNiaxfqmsSafd7RowdekFE6r_z6CCIXCi3XNVoqkriHkkrovHTruCliXa1g94bx0G__pjzen9sC6Hg2WOOAqaQ0BZ6puNOkKALFhhJYR5oELBTaSaoXbKSw_NSvbVd4i734OiuYP2d2mYidk',
-  architecturalUpdo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD88-pDid-CLpmGUKydNkylhG-6vAKnwsJZwO8IQ1nfSarCwZiUvv0BDBB1LLHiIJflW39XtpPSbxb3XgTXTuQtdMDHiHRPlTlpqfjU85CKHXUT4dJ2sgMWr3Ozmh22pZ2ZszxOJjHRtx00tvfn24-VIAHHSd9xcDVoj4ibWBE4e6VCmuhmDHa6rKV12fyEoeBqTC2I_-lFJh06isIraSUJByXuUjfh5TwU-6QRoWkqVS5NdrjgpAz_EeBuHjn5wWFa-ycG5szaNyo',
-  contactAtmosphere: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD7bdy9ckb8ZSPVqwG3AfJ2bBSXyYX_Clj-Q-vbipvWeIDtr6PoSfSpyLbk1Xv5JBBWpft351x56Y5L5A2hsZDhJnHOLybyO4XRNBEsLxFIf6mpELJBUlMqpsNJv3DJQGaofysqWr4dWt7-E2RsKIUkFCcyLvCdiO8M94rX-DWtIkF6F3I-ZtXnT0AJtf6vGSXS2OmzYXPlUAellfJtrKmktfpnMWUhFaIX7Vfo2VMQKDA2J09wl_plT1jZHmzEAkcMuG9KgiolS9g',
-  mapGraphic: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDufbaYV8AQ9TFhffjfQeSTL7I62vqRt6A7tY4ReQRlqCkf7dq8Rnsc89VvpUqDYbkqlzrX441Gy72ZPc5hO_wmxmcddgwK3P0J_l-FYXJhjAdh6n9leKNnRgBGOxFA3Eeo9Kp0djmVlmZ94OKCtzmjmcFmGEk1BauJYurWQaYkQG0XDf-QHgoJofG0gEQ1u7UvrtC-OH5PFI-BIBqD25P5zcghnzRV4557f9tXtQBu-myUh_A8lYav_PlhTy5rHCHMR58e_Kmmfj0',
-  serviceBoxBraids: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBRaSiGyW61VMJ69uFi85oOffBEIbP2FUh25D0ojcEkrs3PhkeghFdKwmj0B7qs91eDXoqdAOX-wQ8Dgm6p5D9Kej04aQwxiakdibfSkjJJdqKd6lyIGEmyWPWydfCC3oiMiU3RnnyvUR3wQwkIOjQHU1L0V7CJKaCj6gUhMd56UlMVp8dKE5tvH4fKXmPz9etboM0TtcOAtEAQpidHwFA0dzMDNdrAlISNSMYCdiWxsBIM0ZTzYJSVcZHOvNYZYfftJ0Gfqra5j3A',
-  serviceKnotless: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBP6gSAWY19-TAGYiqR6fP1KchDGBD1dkAVz2rgqdNK36q0NeRRWYJEK0bzr8x6VZsBr28AB8Of-v_hi31yK4fTgv8j65gMH9buQerTmL2TzlKJ4BrcpvTrnDMsAPS_6uBjaZnl1Ssf9B92_3yfQyola_ep39KB_oyN9XuahUHW2G46VUtGRLhBPb9uF3swaUFd2k-0bQqj63XPKTfasZSEqH_jTtegxXtgTCnvWO3eohEdEC7prVxBSM-EiT3uKLBusp0T11toeDo',
-  serviceCornrows: 'https://lh3.googleusercontent.com/aida-public/AB6AXuButwKo33CYHJyU22t7Gtev_sXMiyZUywnDO6EBw9NOQ-l3T74qtMXYQp8pMv_sb_Q8950EGElM45M2pq6gdF7mm-4IHhCX7h6B6Z_lYrq63wh6s2CC3_v1mfF_bYnXoNjc-_zXF_9qOuO7z1NXiRBTQByEDyZxb5ar3VEFydJSZooN9_Ulw6SyXdP09_AYtpcsVNwQYUp9fUhW3Jm_SeOR6Nc5SkGB4nlWXQT9_80REvgBkd28eST-OnCH2aboIBZNXuY-kIPniss'
+  heroPortrait:      GD('1C4EBkij6GCiIse6rIGzp7q1SoYQhY4V1'), // WA0054 – 440KB
+  heroCornrows:      GD('1cFfvUbCILHVjPIoqDYF7iF9aYPvjMYLM'), // WA0052 – 412KB
+  knotlessSpec:      GD('1lMmZHXCYkMhgKiR2bN60Cciq53fB3iPI'), // WA0014 – 384KB
+  cornrowsSpec:      GD('1MYnK4yziofgBs0LEaHrvbbT435OoVa8W'), // WA0037 – 366KB
+  passionTwistsSpec: GD('1s7nkSeOXoZSgejjLBAxST4W9v_M_IkuU'), // WA0013 – 340KB
+  studioInterior:    GD('1AyuWRWEnetcwR2ht5cEnYnml_QzBHTTn'), // WA0021 – 322KB
+  gildedKnotless:    GD('1wviEHB8sz6OzeSdGWQjLZcm2NE88EUFw'), // WA0016 – 316KB
+  linearGeometry:    GD('1sNmBAQDk2Fz0zUbQbVnLBVSDDtcpYt7u'), // WA0022 – 311KB
+  honeyBoxBraids:    GD('1mh6WZY1jOfuAYQUpWibsw3kxb8hbbPQ2'), // WA0027 – 307KB
+  artisanDetails:    GD('1n60qgTWjrJ41s8c6HDP0aNMwADSn7AA6'), // WA0057 – 295KB
+  architecturalUpdo: GD('1Af89KLoNh4nlQkhz7M9TKrLIrc0CiR6w'), // WA0055 – 292KB
+  contactAtmosphere: GD('1Lx40STC3Sd9xUeoXWNd1tKqptmFa-bKK'), // WA0043 – 283KB
+  mapGraphic:        GD('1aW3Ygc7EbUthZIL148kj7EBfcx3EYby4'), // WA0048 – 278KB
+  serviceBoxBraids:  GD('1Omv5rU_Usc5Y4030H8c1OQJ2KAg6V6Nd'), // WA0030 – 273KB
+  serviceKnotless:   GD('1wUi2GfvgPT3e7SpWPC6JXSI-W5wkHoLX'), // WA0058 – 320KB
+  serviceCornrows:   GD('14AJRD1t2MywmoBvOPTKobhPUBInp0EVU'), // WA0036 – 391KB
 };
 
 export const DICTIONARY = {

@@ -22,22 +22,12 @@ interface HeroProps {
   onOpenBooking: () => void;
 }
 
+const GD = (id: string) => `https://lh3.googleusercontent.com/d/${id}`;
+
 const HERO_SLIDES = [
-  {
-    url: 'https://d2ol7oe51mr4n9.cloudfront.net/user_2yK8DBSNXhIaNeBIzHhT2dAEBkW/8c97da61-f9fb-4191-bb6a-a1026e4defb8.png',
-    kbClass: 'hero-kb-1',
-    pos: 'center 25%',
-  },
-  {
-    url: 'https://d2ol7oe51mr4n9.cloudfront.net/user_2yK8DBSNXhIaNeBIzHhT2dAEBkW/89b4008e-c5da-43a8-be4b-0941aeafe86d.png',
-    kbClass: 'hero-kb-2',
-    pos: 'center 20%',
-  },
-  {
-    url: 'https://d2ol7oe51mr4n9.cloudfront.net/user_2yK8DBSNXhIaNeBIzHhT2dAEBkW/acc6a807-1ecd-49c7-980e-8e67874fa485.png',
-    kbClass: 'hero-kb-3',
-    pos: 'center 30%',
-  },
+  { url: GD('1C4EBkij6GCiIse6rIGzp7q1SoYQhY4V1'), kbClass: 'hero-kb-1', pos: 'center 20%' },
+  { url: GD('14AJRD1t2MywmoBvOPTKobhPUBInp0EVU'), kbClass: 'hero-kb-2', pos: 'center 25%' },
+  { url: GD('1lMmZHXCYkMhgKiR2bN60Cciq53fB3iPI'), kbClass: 'hero-kb-3', pos: 'center 30%' },
 ];
 
 const SLIDE_DURATION = 6000;
