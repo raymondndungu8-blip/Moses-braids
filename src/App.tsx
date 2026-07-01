@@ -10,6 +10,7 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { BookingModal } from './components/BookingModal';
 import { CustomCursor } from './components/CustomCursor';
+import { WhatsAppButton } from './components/WhatsAppButton';
 
 export function App() {
   const [currentView, setCurrentView] = useState<View>('home');
@@ -110,6 +111,9 @@ export function App() {
 
       {/* Footer */}
       <Footer lang={lang} onSelectView={setCurrentView} />
+
+      {/* WhatsApp Floating Button */}
+      <WhatsAppButton />
 
       {/* Booking Modal Overlay */}
       {activeBookingModal && (
