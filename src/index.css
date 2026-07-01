@@ -73,6 +73,12 @@
   scrollbar-width: none;  /* Firefox */
 }
 
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}
+
 body {
   background-color: #faf5ee;
   color: #3a302a;
@@ -82,4 +88,40 @@ body {
 
 h1, h2, h3, h4, .font-serif {
   font-family: var(--font-serif);
+}
+
+/* ── Hero Ken Burns animations ── */
+@keyframes kb1 {
+  0%   { transform: scale(1.08) translate(-1.5%, 0.5%); }
+  100% { transform: scale(1.00) translate(1.5%, -1%);   }
+}
+@keyframes kb2 {
+  0%   { transform: scale(1.00) translate(1%, 1%);   }
+  100% { transform: scale(1.08) translate(-1%, -0.5%); }
+}
+@keyframes kb3 {
+  0%   { transform: scale(1.06) translate(0%, -1%); }
+  100% { transform: scale(1.00) translate(0%, 1%);  }
+}
+
+.hero-kb-1 { animation: kb1 12s ease-in-out infinite alternate; }
+.hero-kb-2 { animation: kb2 14s ease-in-out infinite alternate; }
+.hero-kb-3 { animation: kb3 11s ease-in-out infinite alternate; }
+
+/* ── Hero video background ── */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+@media (max-width: 640px) {
+  .hero-kb-1,
+  .hero-kb-2,
+  .hero-kb-3 {
+    animation-duration: 18s;
+  }
 }
