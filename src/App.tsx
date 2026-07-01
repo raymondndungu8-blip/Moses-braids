@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BookingState, Language, PortfolioCategory, View } from './types';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -9,12 +9,18 @@ import { ServicesBooking } from './components/ServicesBooking';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { BookingModal } from './components/BookingModal';
+import { CustomCursor } from './components/CustomCursor';
 
 export function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [lang, setLang] = useState<Language>('de');
   const [activeBookingModal, setActiveBookingModal] = useState<BookingState | null>(null);
   const [preselectedCategory, setPreselectedCategory] = useState<string | null>(null);
+  const [hasPointer, setHasPointer] = useState(false);
+
+  useEffect(() => {
+    setHasPointer(window.matchMedia('(pointer: fine)').matches);
+  }, []);
 
   const toggleLang = () => {
     setLang((prev) => (prev === 'de' ? 'en' : 'de'));
@@ -34,7 +40,8 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#faf5ee] text-[#3a302a] selection:bg-[#c2652a] selection:text-white">
-      
+      {hasPointer && <CustomCursor />}
+
       {/* Top Navbar */}
       <Navbar
         currentView={currentView}

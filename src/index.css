@@ -73,6 +73,12 @@
   scrollbar-width: none;  /* Firefox */
 }
 
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}
+
 body {
   background-color: #faf5ee;
   color: #3a302a;
