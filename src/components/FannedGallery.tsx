@@ -10,8 +10,9 @@ interface FannedGalleryProps {
 }
 
 // Build the fan from real portfolio data so every braid style is represented.
-// Order chosen so the boldest looks land toward the centre of the arc.
-const FAN_ORDER = ['p2', 'p3', 'p1', 'p6', 'p4', 'p5'];
+// Order is chosen so the hero look (p1 — the red knotless) lands dead centre.
+const FAN_ORDER = ['p2', 'p3', 'p1', 'p4', 'p6', 'p5'];
+const HERO_ID = 'p1';
 const FAN: PortfolioItem[] = FAN_ORDER
   .map((id) => PORTFOLIO_ITEMS.find((it) => it.id === id))
   .filter((it): it is PortfolioItem => Boolean(it));
@@ -26,8 +27,9 @@ interface Params {
   arcY: number;
 }
 
-const DESKTOP: Params = { cardW: 200, cardH: 280, gapX: 116, maxRot: 12, arcY: 40 };
-const MOBILE: Params = { cardW: 122, cardH: 172, gapX: 44, maxRot: 9, arcY: 24 };
+// Wider spread + stronger tilt for a more dramatic fanned-deck arc.
+const DESKTOP: Params = { cardW: 202, cardH: 284, gapX: 130, maxRot: 15, arcY: 46 };
+const MOBILE: Params = { cardW: 126, cardH: 178, gapX: 50, maxRot: 11, arcY: 28 };
 
 function FanCard({
   item,
@@ -36,6 +38,7 @@ function FanCard({
   offset,
   progress,
   p,
+  featured,
   isActive,
   anyActive,
   onActivate,
@@ -47,6 +50,7 @@ function FanCard({
   offset: number;
   progress: MotionValue<number>;
   p: Params;
+  featured: boolean;
   isActive: boolean;
   anyActive: boolean;
   onActivate: () => void;
@@ -58,8 +62,9 @@ function FanCard({
   const y = useTransform(progress, [0, 1], [Math.abs(offset) * 3, Math.abs(offset) * p.arcY]);
   const scale = useTransform(progress, [0, 1], [0.9, 1]);
 
-  // Focus pop layered on top of the scroll transform
-  const focusScale = isActive ? 1.12 : anyActive ? 0.93 : 1;
+  // Focus/feature pop layered on top of the scroll transform.
+  const focusScale = isActive ? 1.14 : anyActive ? 0.92 : featured ? 1.07 : 1;
+  const focusLift = isActive ? -16 : !anyActive && featured ? -8 : 0;
 
   return (
     <motion.div
@@ -71,7 +76,7 @@ function FanCard({
         scale,
         marginLeft: -p.cardW / 2,
         marginTop: -p.cardH / 2,
-        zIndex: isActive ? 60 : 50 - Math.abs(offset) * 10,
+        zIndex: isActive ? 70 : featured ? 55 : 50 - Math.abs(offset) * 10,
       }}
     >
       <motion.button
@@ -81,10 +86,14 @@ function FanCard({
         onClick={onSelect}
         onMouseEnter={onActivate}
         onFocus={onActivate}
-        animate={{ scale: focusScale, y: isActive ? -14 : 0 }}
+        animate={{ scale: focusScale, y: focusLift }}
         transition={{ type: 'spring', stiffness: 300, damping: 24 }}
         className={`relative block rounded-[22px] overflow-hidden shadow-2xl outline-none transition-shadow ${
-          isActive ? 'ring-2 ring-[#e08850]' : 'ring-1 ring-black/10'
+          isActive
+            ? 'ring-2 ring-[#e08850]'
+            : featured
+              ? 'ring-2 ring-[#e08850]/45'
+              : 'ring-1 ring-black/10'
         }`}
         style={{ width: p.cardW, height: p.cardH }}
       >
@@ -137,10 +146,13 @@ function FanCard({
   );
 }
 
-export const FannedGallery: React.FC<FannedGalleryProps> = ({ lang, onSelect }) => {
+export const FannedGallery = ({ lang, onSelect }: FannedGalleryProps) => {
   const targetRef = useRef<HTMLDivElement>(null);
   const [p, setP] = useState<Params>(DESKTOP);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [hoverless, setHoverless] = useState(false);
+  const [inView, setInView] = useState(false);
+  const userInteracted = useRef(false);
 
   useEffect(() => {
     const compute = () => setP(window.matchMedia('(max-width: 640px)').matches ? MOBILE : DESKTOP);
@@ -149,6 +161,39 @@ export const FannedGallery: React.FC<FannedGalleryProps> = ({ lang, onSelect }) 
     return () => window.removeEventListener('resize', compute);
   }, []);
 
+  // Detect no-hover (touch) devices — they get the auto-fan attract cycle.
+  useEffect(() => {
+    setHoverless(window.matchMedia('(hover: none)').matches);
+  }, []);
+
+  // Only run the attract animation while the gallery is on screen.
+  useEffect(() => {
+    const el = targetRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0.35,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Auto-cycle the highlight on touch devices to hint that cards are tappable.
+  // Stops permanently on the first real user interaction.
+  useEffect(() => {
+    if (!hoverless || !inView || userInteracted.current) return;
+    let i = 0;
+    setActiveIndex(0);
+    const id = window.setInterval(() => {
+      if (userInteracted.current) {
+        window.clearInterval(id);
+        return;
+      }
+      i = (i + 1) % FAN.length;
+      setActiveIndex(i);
+    }, 1900);
+    return () => window.clearInterval(id);
+  }, [hoverless, inView]);
+
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ['start end', 'center center'],
@@ -156,14 +201,27 @@ export const FannedGallery: React.FC<FannedGalleryProps> = ({ lang, onSelect }) 
 
   const activeItem = activeIndex !== null ? FAN[activeIndex] : null;
 
+  const activateByUser = (index: number) => {
+    userInteracted.current = true;
+    setActiveIndex(index);
+  };
+
   const handleSelect = (index: number, item: PortfolioItem) => {
-    // First interaction focuses the card; a second click (or clicking the
-    // already-focused card) opens the detail view. Works with touch + mouse.
-    if (activeIndex !== index) {
+    // The first real interaction (or focusing a different card) just selects it;
+    // clicking the already-focused card opens the detail view. Touch + mouse safe.
+    const firstTouch = !userInteracted.current;
+    userInteracted.current = true;
+    if (firstTouch || activeIndex !== index) {
       setActiveIndex(index);
       return;
     }
     onSelect?.(item);
+  };
+
+  const openActive = () => {
+    if (!activeItem) return;
+    userInteracted.current = true;
+    onSelect?.(activeItem);
   };
 
   return (
@@ -192,7 +250,7 @@ export const FannedGallery: React.FC<FannedGalleryProps> = ({ lang, onSelect }) 
       {/* Fan stage */}
       <div
         className="relative w-full flex items-center justify-center"
-        style={{ height: p.cardH + p.arcY * (FAN.length / 2) + 80 }}
+        style={{ height: p.cardH + p.arcY * (FAN.length / 2) + 90 }}
       >
         {FAN.map((item, i) => (
           <FanCard
@@ -203,9 +261,10 @@ export const FannedGallery: React.FC<FannedGalleryProps> = ({ lang, onSelect }) 
             offset={i - CENTER}
             progress={scrollYProgress}
             p={p}
+            featured={item.id === HERO_ID}
             isActive={activeIndex === i}
             anyActive={activeIndex !== null}
-            onActivate={() => setActiveIndex(i)}
+            onActivate={() => activateByUser(i)}
             onSelect={() => handleSelect(i, item)}
           />
         ))}
@@ -218,7 +277,7 @@ export const FannedGallery: React.FC<FannedGalleryProps> = ({ lang, onSelect }) 
             <motion.button
               key={activeItem.id}
               type="button"
-              onClick={() => onSelect?.(activeItem)}
+              onClick={openActive}
               data-cursor="view"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
