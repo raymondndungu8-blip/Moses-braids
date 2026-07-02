@@ -39,11 +39,11 @@ function getResponsiveMultiplier(width: number) {
 function getHeightMultiplier(width: number) {
   // Ideal layout heights (in px at 16px root) matching the CSS breakpoints
   let idealPx: number;
-  if (width < 480) idealPx = 22 * 16;       // 352px
+  if (width < 480) idealPx = 24 * 16;       // 384px
   else if (width < 640) idealPx = 26 * 16;  // 416px
-  else if (width < 768) idealPx = 28 * 16;  // 448px
-  else if (width < 1024) idealPx = 34 * 16; // 544px
-  else idealPx = 38 * 16;                    // 608px
+  else if (width < 768) idealPx = 29 * 16;  // 464px
+  else if (width < 1024) idealPx = 33 * 16; // 528px
+  else idealPx = 40 * 16;                    // 640px
 
   const available = window.innerHeight * 0.7; // 70vh budget
   if (available >= idealPx) return 1;
