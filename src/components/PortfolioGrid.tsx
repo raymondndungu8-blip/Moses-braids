@@ -49,8 +49,8 @@ export const PortfolioGrid: React.FC<PortfolioGridProps> = ({ lang, onSelectView
           ]}
         </motion.div>
 
-        {/* Scroll-driven fanned gallery — selecting a card opens its lightbox */}
-        <FannedGallery lang={lang} onSelect={setActiveModalItem} />
+        {/* GSAP card-fan carousel of signature styles */}
+        <FannedGallery lang={lang} />
 
         {/* Filter Pills */}
         <motion.div

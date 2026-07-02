@@ -125,3 +125,29 @@ h1, h2, h3, h4, .font-serif {
     animation-duration: 18s;
   }
 }
+
+/* ── Fanned card carousel (card-fan-carousel.tsx) ── */
+.fan-layout { height: 22rem; }
+@media (min-width: 480px)  { .fan-layout { height: 26rem; } }
+@media (min-width: 640px)  { .fan-layout { height: 28rem; } }
+@media (min-width: 768px)  { .fan-layout { height: 34rem; } }
+@media (min-width: 1024px) { .fan-layout { height: 38rem; } }
+
+.fan-card {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 7.5rem;
+  height: 11rem;
+  border-radius: 1.1rem;
+  overflow: hidden;
+  background: #3a302a;
+  box-shadow: 0 14px 36px rgba(58, 48, 42, 0.30);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  will-change: transform;
+  opacity: 0; /* gsap fades cards in on mount; avoids a flash of stacked cards */
+}
+@media (min-width: 480px)  { .fan-card { width: 8.5rem;  height: 12.5rem; } }
+@media (min-width: 640px)  { .fan-card { width: 9.5rem;  height: 14rem; } }
+@media (min-width: 768px)  { .fan-card { width: 11.5rem; height: 17rem; } }
+@media (min-width: 1024px) { .fan-card { width: 14rem;   height: 21rem; } }
