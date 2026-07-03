@@ -7,8 +7,9 @@ interface FannedGalleryProps {
   lang: Language;
 }
 
-// Seven signature looks — 7 cards give the carousel its symmetric ±21° fan
-// with the red Knotless hero landing dead centre.
+// Ten looks — more than 7 cards activates the carousel's circular
+// pagination (arrows + dots), matching the 21st.dev card-fan demo.
+// The red Knotless hero sits at index 3 so it lands dead centre on load.
 const FAN_IMAGES: { img: string; en: string; de: string }[] = [
   { img: IMAGES.honeyBoxBraids, en: 'Box Braids', de: 'Box Braids' },
   { img: IMAGES.linearGeometry, en: 'Design Cornrows', de: 'Design Cornrows' },
@@ -17,6 +18,9 @@ const FAN_IMAGES: { img: string; en: string; de: string }[] = [
   { img: IMAGES.artisanDetails, en: 'Fulani Braids', de: 'Fulani Braids' },
   { img: IMAGES.architecturalUpdo, en: 'Braided Updo', de: 'Hochsteckfrisur' },
   { img: IMAGES.heroCornrows, en: 'Artistic Styles', de: 'Artistic Styles' },
+  { img: IMAGES.knotlessSpec, en: 'Knotless Braids', de: 'Knotless Braids' },
+  { img: IMAGES.cornrowsSpec, en: 'Cornrows', de: 'Cornrows' },
+  { img: IMAGES.serviceKnotless, en: 'Knotless Braids', de: 'Knotless Braids' },
 ];
 
 export const FannedGallery = ({ lang }: FannedGalleryProps) => {
@@ -43,8 +47,8 @@ export const FannedGallery = ({ lang }: FannedGalleryProps) => {
         </h3>
         <p className="text-[#9a9088] text-xs sm:text-sm mt-2">
           {lang === 'de'
-            ? 'Fahren Sie über die Karten, um jeden Stil zu entdecken'
-            : 'Hover the cards to explore each signature style'}
+            ? 'Fahren Sie über die Karten und blättern Sie mit den Pfeilen durch alle Arbeiten'
+            : 'Hover the cards and use the arrows to browse all our work'}
         </p>
       </motion.div>
 
