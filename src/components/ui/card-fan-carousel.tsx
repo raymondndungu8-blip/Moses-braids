@@ -308,8 +308,8 @@ export default function SocialCards({ cards }: SocialCardsProps) {
       </div>
 
       {activeLabel && (
-        <div className="h-8 -mt-2 md:-mt-20 flex items-center justify-center relative z-30" aria-live="polite">
-          <span key={activeLabel} className="fan-label font-serif text-lg md:text-2xl text-black/75 dark:text-white/85">
+        <div className="h-10 md:h-12 -mt-2 md:-mt-20 flex items-center justify-center relative z-30" aria-live="polite">
+          <span key={activeLabel} className="fan-label font-serif text-xl md:text-3xl font-semibold text-[#c2652a] px-5 py-1 rounded-full bg-[#faf5ee]/90 backdrop-blur-sm shadow-[0_2px_12px_rgba(58,48,42,0.15)]">
             {activeLabel}
           </span>
         </div>
