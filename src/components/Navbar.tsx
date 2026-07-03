@@ -9,20 +9,20 @@ import { DICTIONARY } from '../data/content';
 // - Motion: 21st.dev @aceternity/resizable-navbar (full bar shrinks into a
 //   floating pill on scroll) + tubelight-style active indicator
 
+const WHATSAPP_URL = 'https://wa.me/4367799015819';
+
 interface NavbarProps {
   currentView: View;
   onSelectView: (view: View) => void;
   lang: Language;
   onToggleLang: () => void;
-  onOpenBooking: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentView,
   onSelectView,
   lang,
-  onToggleLang,
-  onOpenBooking
+  onToggleLang
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -37,9 +37,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems: { id: View; label: string }[] = [
     { id: 'home', label: t.home },
-    { id: 'portfolio', label: t.portfolio },
-    { id: 'services', label: t.services },
-    { id: 'contact', label: t.contact }
+    { id: 'portfolio', label: t.portfolio }
   ];
 
   const handleNavClick = (view: View) => {
@@ -155,7 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </motion.button>
 
           <motion.button
-            onClick={() => { onSelectView('services'); onOpenBooking(); }}
+            onClick={() => window.open(WHATSAPP_URL, '_blank', 'noopener')}
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#3a302a] text-white text-xs uppercase tracking-wider font-semibold hover:bg-[#c2652a] transition-colors shadow-md origin-center"
             animate={{ scale: scrolled ? 0.92 : 1 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
@@ -231,7 +229,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="pt-4 border-t border-[#ece6dc] mt-2"
               >
                 <button
-                  onClick={() => { onSelectView('services'); onOpenBooking(); setMobileMenuOpen(false); }}
+                  onClick={() => { window.open(WHATSAPP_URL, '_blank', 'noopener'); setMobileMenuOpen(false); }}
                   className="w-full py-3.5 rounded-full bg-[#c2652a] text-white font-semibold text-center uppercase tracking-wider text-xs flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />

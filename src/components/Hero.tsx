@@ -25,13 +25,14 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease } }
 };
 
+const WHATSAPP_URL = 'https://wa.me/4367799015819';
+
 interface HeroProps {
   lang: Language;
   onSelectView: (view: View) => void;
-  onOpenBooking: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ lang, onSelectView, onOpenBooking }) => {
+export const Hero: React.FC<HeroProps> = ({ lang, onSelectView }) => {
   const t = DICTIONARY[lang].hero;
 
   return (
@@ -125,7 +126,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, onSelectView, onOpenBooking })
           {/* CTA buttons — cream pill like the reference's "Explore Services ↗" */}
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
             <motion.button
-              onClick={() => { onSelectView('services'); onOpenBooking(); }}
+              onClick={() => window.open(WHATSAPP_URL, '_blank', 'noopener')}
               className="px-8 py-4 rounded-full bg-[#faf5ee] text-[#3a302a] font-semibold tracking-wider uppercase text-xs flex items-center justify-center gap-2 shadow-xl"
               whileHover={{ backgroundColor: '#c2652a', color: '#ffffff', y: -2, boxShadow: '0 12px 32px rgba(194,101,42,0.45)' }}
               whileTap={{ scale: 0.97 }}

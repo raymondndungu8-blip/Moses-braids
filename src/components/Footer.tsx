@@ -80,7 +80,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onSelectView }) => {
               </div>
             </div>
             <motion.button
-              onClick={() => go('services')}
+              onClick={() => window.open('https://wa.me/4367799015819', '_blank', 'noopener')}
               className="inline-flex items-center gap-2 mt-2 px-6 py-3 rounded-full bg-[#faf5ee] text-[#3a302a] text-xs uppercase tracking-wider font-semibold hover:bg-[#c2652a] hover:text-white transition-colors"
               whileHover={{ scale: 1.04, y: -1 }}
               whileTap={{ scale: 0.96 }}
@@ -94,7 +94,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onSelectView }) => {
           <motion.div variants={fadeUp}>
             <h4 className="font-serif text-lg text-white mb-4">Navigation</h4>
             <ul className="space-y-2.5 text-xs text-[#d8d0c8]">
-              {(['home', 'portfolio', 'services', 'contact'] as View[]).map((view) => (
+              {(['home', 'portfolio'] as View[]).map((view) => (
                 <li key={view}>
                   <motion.button
                     onClick={() => go(view)}

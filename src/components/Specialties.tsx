@@ -71,7 +71,7 @@ export const Specialties: React.FC<SpecialtiesProps> = ({ lang, onSelectView }) 
                   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.65, ease: [0.25, 0.1, 0.25, 1] } }
                 }}
                 whileHover={{ y: -10, transition: { duration: 0.3, ease: 'easeOut' } }}
-                onClick={() => { onSelectView('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                onClick={() => { onSelectView('portfolio'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="group relative bg-[#f2ece4] rounded-2xl overflow-hidden border border-[#ece6dc] hover:border-[#c2652a] transition-colors duration-400 shadow-sm hover:shadow-2xl cursor-pointer flex flex-col"
               >
                 {/* Image */}
@@ -132,7 +132,7 @@ export const Specialties: React.FC<SpecialtiesProps> = ({ lang, onSelectView }) 
           transition={{ duration: 0.55, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <motion.button
-            onClick={() => { onSelectView('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            onClick={() => { onSelectView('portfolio'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             className="inline-flex items-center gap-3 px-8 py-3.5 rounded-full border border-[#3a302a] text-[#3a302a] text-xs font-bold tracking-widest uppercase overflow-hidden relative"
             whileHover={{ backgroundColor: '#3a302a', color: '#faf5ee', scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
