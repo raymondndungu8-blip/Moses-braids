@@ -26,7 +26,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, onSelectView, onOpenBooking })
   const t = DICTIONARY[lang].hero;
 
   return (
-    <section className="relative overflow-hidden bg-[#332a24] text-white lg:min-h-[88vh] lg:flex lg:items-center">
+    <section className="relative min-h-[88vh] flex items-center overflow-hidden bg-[#332a24] text-white">
       {/* ── Right-side editorial photo (desktop) ── */}
       <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[46%] z-0" aria-hidden="true">
         <img
@@ -43,6 +43,18 @@ export const Hero: React.FC<HeroProps> = ({ lang, onSelectView, onOpenBooking })
               'linear-gradient(to right, #332a24 0%, rgba(51,42,36,0.35) 38%, transparent 65%), linear-gradient(to top, rgba(38,30,25,0.55) 0%, transparent 40%)',
           }}
         />
+      </div>
+
+      {/* ── Mobile photo background ── */}
+      <div className="lg:hidden absolute inset-0 z-0" aria-hidden="true">
+        <img
+          src={IMAGES.heroPortrait}
+          alt=""
+          loading="eager"
+          className="w-full h-full object-cover hero-kb-1"
+          style={{ objectPosition: 'center 20%' }}
+        />
+        <div className="absolute inset-0 bg-[#2a221c]/85" />
       </div>
 
       {/* ── Decorative braid-strand line art ── */}
@@ -68,7 +80,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, onSelectView, onOpenBooking })
       </span>
 
       {/* ── Content ── */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20 lg:py-24">
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-24">
         <motion.div
           className="max-w-2xl flex flex-col items-start text-left"
           variants={stagger}
@@ -146,38 +158,9 @@ export const Hero: React.FC<HeroProps> = ({ lang, onSelectView, onOpenBooking })
         </motion.div>
       </div>
 
-      {/* ── Mobile/tablet photo block below the text (Flourish split, stacked) ── */}
-      <div className="lg:hidden relative w-full h-80 sm:h-[28rem] z-10" aria-hidden="true">
-        <img
-          src={IMAGES.heroPortrait}
-          alt=""
-          loading="eager"
-          className="w-full h-full object-cover hero-kb-1"
-          style={{ objectPosition: 'center 20%' }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(to bottom, #332a24 0%, transparent 32%)' }}
-        />
-        {/* Rotating badge on the seam between text and photo */}
-        <div className="absolute -top-12 right-5 w-24 h-24 flex items-center justify-center">
-          <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full animate-spin-slow">
-            <defs>
-              <path id="hero-badge-circle-m" d="M 50,50 m -39,0 a 39,39 0 1,1 78,0 a 39,39 0 1,1 -78,0" />
-            </defs>
-            <text fill="#fbe8d8" style={{ fontSize: '8.2px', letterSpacing: '2.4px', textTransform: 'uppercase', fontWeight: 600 }}>
-              <textPath href="#hero-badge-circle-m">Moses Braids • Flechtkunst • 4400 Steyr •</textPath>
-            </text>
-          </svg>
-          <span className="w-10 h-10 rounded-full bg-[#c2652a] flex items-center justify-center font-serif text-lg text-white shadow-lg">
-            M
-          </span>
-        </div>
-      </div>
-
       {/* ── Rotating circular badge on the text/photo seam ── */}
       <motion.div
-        className="hidden lg:flex absolute bottom-20 right-8 lg:right-[43%] z-30 w-28 h-28 xl:w-32 xl:h-32 items-center justify-center"
+        className="hidden md:flex absolute bottom-20 right-8 lg:right-[43%] z-30 w-28 h-28 xl:w-32 xl:h-32 items-center justify-center"
         initial={{ opacity: 0, scale: 0.6 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, delay: 1.1, ease }}
