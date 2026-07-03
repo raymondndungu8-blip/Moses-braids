@@ -66,7 +66,7 @@ function getSlotConfig(totalCards: number, slot: number) {
 }
 
 const ARROW_CLASSES =
-  "relative items-center justify-center rounded-full border-[1.5px] border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-[16px] text-black/40 dark:text-white/55 cursor-pointer shrink-0 z-30 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-black/25 dark:hover:border-white/25 hover:text-black/70 dark:hover:text-white/80 active:opacity-70 transition-colors duration-300 before:content-[''] before:absolute before:inset-[3px] before:rounded-full before:border before:border-black/[0.04] dark:before:border-white/[0.04] before:pointer-events-none";
+  "relative items-center justify-center rounded-full border-[1.5px] border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-[16px] text-black/40 dark:text-white/55 cursor-pointer shrink-0 z-30 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-[#c2652a] hover:text-[#c2652a] hover:bg-[#c2652a]/10 hover:shadow-[0_0_24px_rgba(194,101,42,0.45)] active:opacity-70 transition-all duration-300 before:content-[''] before:absolute before:inset-[3px] before:rounded-full before:border before:border-black/[0.04] dark:before:border-white/[0.04] before:pointer-events-none";
 
 export default function SocialCards({ cards }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -308,7 +308,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
       </div>
 
       {activeLabel && (
-        <div className="h-8 mt-3 md:mt-5 flex items-center justify-center relative z-30" aria-live="polite">
+        <div className="h-8 -mt-2 md:-mt-20 flex items-center justify-center relative z-30" aria-live="polite">
           <span key={activeLabel} className="fan-label font-serif text-lg md:text-2xl text-black/75 dark:text-white/85">
             {activeLabel}
           </span>
@@ -316,13 +316,13 @@ export default function SocialCards({ cards }: SocialCardsProps) {
       )}
 
       {needsPagination && (
-        <div className="flex items-center justify-center gap-4 mt-3 md:mt-5 z-30">
+        <div className="flex items-center justify-center gap-4 mt-2 md:mt-3 z-30">
           <button className={`${ARROW_CLASSES} hidden md:flex w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("left")} aria-label="Previous">
             {chevron("left")}
           </button>
           <div className="flex items-center gap-2">
             {cards.map((_, i) => (
-              <span key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === centerIndex ? "bg-black/70 dark:bg-white/80 scale-[1.3]" : "bg-black/15 dark:bg-white/15"}`} />
+              <span key={i} className={`w-2 h-2 rounded-full transition-all duration-300 hover:bg-[#c2652a] hover:scale-[1.4] ${i === centerIndex ? "bg-[#c2652a] scale-[1.3]" : "bg-black/15 dark:bg-white/15"}`} />
             ))}
           </div>
           <button className={`${ARROW_CLASSES} hidden md:flex w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("right")} aria-label="Next">
