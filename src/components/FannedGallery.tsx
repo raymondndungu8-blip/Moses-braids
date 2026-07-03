@@ -31,7 +31,7 @@ export const FannedGallery = ({ lang }: FannedGalleryProps) => {
   }));
 
   return (
-    <div className="py-16 sm:py-24 overflow-hidden">
+    <div className="pt-6 pb-0 sm:pt-10 overflow-hidden">
       {/* Heading */}
       <motion.div
         className="text-center mb-6 sm:mb-4 px-4"
@@ -53,8 +53,11 @@ export const FannedGallery = ({ lang }: FannedGalleryProps) => {
         </p>
       </motion.div>
 
-      {/* GSAP card-fan carousel */}
-      <SocialCards cards={cards} />
+      {/* GSAP card-fan carousel — negative margin swallows the fan's internal
+          vertical slack so it sits closer to the heading */}
+      <div className="-mt-6 sm:-mt-8">
+        <SocialCards cards={cards} />
+      </div>
     </div>
   );
 };
