@@ -16,7 +16,7 @@ export const PortfolioGrid: React.FC<PortfolioGridProps> = ({ lang }) => {
   const t = DICTIONARY[lang].portfolio;
 
   return (
-    <section className="py-28 bg-[#faf5ee] overflow-hidden">
+    <section className="pt-24 pb-6 sm:pt-28 sm:pb-10 bg-[#faf5ee] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
