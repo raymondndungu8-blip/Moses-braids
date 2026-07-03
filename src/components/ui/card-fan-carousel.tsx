@@ -5,6 +5,7 @@ export interface CardItem {
   imgUrl: string;
   alt?: string;
   linkUrl?: string;
+  label?: string;
 }
 
 interface SocialCardsProps {
@@ -25,10 +26,10 @@ const FAN_POSITIONS = [
 ];
 
 function getResponsiveMultiplier(width: number) {
-  if (width < 480) return 0.28;
-  if (width < 640) return 0.38;
-  if (width < 768) return 0.5;
-  if (width < 1024) return 0.75;
+  if (width < 480) return 0.34;
+  if (width < 640) return 0.45;
+  if (width < 768) return 0.58;
+  if (width < 1024) return 0.8;
   return 1.0;
 }
 
@@ -39,10 +40,10 @@ function getResponsiveMultiplier(width: number) {
 function getHeightMultiplier(width: number) {
   // Ideal layout heights (in px at 16px root) matching the CSS breakpoints
   let idealPx: number;
-  if (width < 480) idealPx = 24 * 16;       // 384px
-  else if (width < 640) idealPx = 26 * 16;  // 416px
-  else if (width < 768) idealPx = 29 * 16;  // 464px
-  else if (width < 1024) idealPx = 33 * 16; // 528px
+  if (width < 480) idealPx = 26 * 16;       // 416px
+  else if (width < 640) idealPx = 28 * 16;  // 448px
+  else if (width < 768) idealPx = 31 * 16;  // 496px
+  else if (width < 1024) idealPx = 35 * 16; // 560px
   else idealPx = 40 * 16;                    // 640px
 
   const available = window.innerHeight * 0.7; // 70vh budget
@@ -65,7 +66,7 @@ function getSlotConfig(totalCards: number, slot: number) {
 }
 
 const ARROW_CLASSES =
-  "relative flex items-center justify-center rounded-full border-[1.5px] border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-[16px] text-black/40 dark:text-white/55 cursor-pointer shrink-0 z-30 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-black/25 dark:hover:border-white/25 hover:text-black/70 dark:hover:text-white/80 active:opacity-70 transition-colors duration-300 before:content-[''] before:absolute before:inset-[3px] before:rounded-full before:border before:border-black/[0.04] dark:before:border-white/[0.04] before:pointer-events-none";
+  "relative items-center justify-center rounded-full border-[1.5px] border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-[16px] text-black/40 dark:text-white/55 cursor-pointer shrink-0 z-30 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-black/25 dark:hover:border-white/25 hover:text-black/70 dark:hover:text-white/80 active:opacity-70 transition-colors duration-300 before:content-[''] before:absolute before:inset-[3px] before:rounded-full before:border before:border-black/[0.04] dark:before:border-white/[0.04] before:pointer-events-none";
 
 export default function SocialCards({ cards }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,6 +78,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
   const totalCards = cards.length;
   const needsPagination = totalCards > MAX_VISIBLE;
   const [centerIndex, setCenterIndex] = useState(needsPagination ? HALF : totalCards >> 1);
+  const [hoverCardIndex, setHoverCardIndex] = useState<number | null>(null);
 
   const getVisibleMap = useCallback((center: number) => {
     const map = new Map<number, number>();
@@ -94,6 +96,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
     if (isAnimating.current || !needsPagination) return;
     isAnimating.current = true;
     directionRef.current = direction;
+    setHoverCardIndex(null);
     setCenterIndex(prev =>
       direction === "right" ? (prev + 1) % totalCards : (prev - 1 + totalCards) % totalCards
     );
@@ -162,10 +165,10 @@ export default function SocialCards({ cards }: SocialCardsProps) {
     prevVisible.current = new Set(visibleMap.keys());
 
     // Hover interactions
-    const visibleEntries: { el: HTMLElement; slot: number }[] = [];
+    const visibleEntries: { el: HTMLElement; slot: number; cardIndex: number }[] = [];
     cardElements.forEach((el, i) => {
       const slot = visibleMap.get(i);
-      if (slot !== undefined) visibleEntries.push({ el, slot });
+      if (slot !== undefined) visibleEntries.push({ el, slot, cardIndex: i });
     });
     visibleEntries.sort((a, b) => a.slot - b.slot);
 
@@ -219,11 +222,15 @@ export default function SocialCards({ cards }: SocialCardsProps) {
       });
     };
 
-    const enterHandlers = visibleEntries.map(({ el, slot }) => {
+    const enterHandlers = visibleEntries.map(({ el, slot, cardIndex }) => {
       const handler = () => {
         if (isAnimating.current) return;
         if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
-        if (activeSlot !== slot) { activeSlot = slot; updateHoverLayout(slot); }
+        if (activeSlot !== slot) {
+          activeSlot = slot;
+          setHoverCardIndex(cardIndex);
+          updateHoverLayout(slot);
+        }
       };
       el.addEventListener("mouseenter", handler);
       return { el, handler };
@@ -232,9 +239,30 @@ export default function SocialCards({ cards }: SocialCardsProps) {
     const onMouseLeave = () => {
       if (isAnimating.current) return;
       if (leaveTimer) clearTimeout(leaveTimer);
-      leaveTimer = setTimeout(() => { activeSlot = null; updateHoverLayout(null); }, 50);
+      leaveTimer = setTimeout(() => {
+        activeSlot = null;
+        setHoverCardIndex(null);
+        updateHoverLayout(null);
+      }, 50);
     };
     container.addEventListener("mouseleave", onMouseLeave);
+
+    // Touch swipe: drag the fan left/right with a finger to cycle cards
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        cycle(dx < 0 ? "right" : "left");
+      }
+    };
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("touchend", onTouchEnd, { passive: true });
 
     const onResize = () => { if (!isAnimating.current) updateHoverLayout(activeSlot); };
     window.addEventListener("resize", onResize);
@@ -242,12 +270,17 @@ export default function SocialCards({ cards }: SocialCardsProps) {
     return () => {
       enterHandlers.forEach(({ el, handler }) => el.removeEventListener("mouseenter", handler));
       container.removeEventListener("mouseleave", onMouseLeave);
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("resize", onResize);
       if (leaveTimer) clearTimeout(leaveTimer);
     };
-  }, [centerIndex, totalCards, getVisibleMap, needsPagination]);
+  }, [centerIndex, totalCards, getVisibleMap, needsPagination, cycle]);
 
   if (!totalCards) return null;
+
+  // Braid-style caption: hovered card wins, otherwise the centred card
+  const activeLabel = cards[hoverCardIndex ?? centerIndex]?.label;
 
   const chevron = (direction: "left" | "right") => (
     <svg className="relative z-[2] w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -256,7 +289,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
   );
 
   return (
-    <section className="flex flex-col items-center w-full py-4 lg:py-8 px-4 md:px-8 relative z-20">
+    <section className="flex flex-col items-center w-full py-4 lg:py-8 px-0 md:px-8 relative z-20">
       <div className="flex items-center justify-center w-full max-w-[90rem]">
         <div ref={containerRef} className="fan-layout flex relative justify-center items-center w-full max-w-[80rem]">
           {cards.map((card, index) => {
@@ -274,9 +307,17 @@ export default function SocialCards({ cards }: SocialCardsProps) {
         </div>
       </div>
 
+      {activeLabel && (
+        <div className="h-8 mt-3 md:mt-5 flex items-center justify-center relative z-30" aria-live="polite">
+          <span key={activeLabel} className="fan-label font-serif text-lg md:text-2xl text-black/75 dark:text-white/85">
+            {activeLabel}
+          </span>
+        </div>
+      )}
+
       {needsPagination && (
-        <div className="flex items-center justify-center gap-4 mt-4 md:mt-6 z-30">
-          <button className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("left")} aria-label="Previous">
+        <div className="flex items-center justify-center gap-4 mt-3 md:mt-5 z-30">
+          <button className={`${ARROW_CLASSES} hidden md:flex w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("left")} aria-label="Previous">
             {chevron("left")}
           </button>
           <div className="flex items-center gap-2">
@@ -284,7 +325,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
               <span key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === centerIndex ? "bg-black/70 dark:bg-white/80 scale-[1.3]" : "bg-black/15 dark:bg-white/15"}`} />
             ))}
           </div>
-          <button className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("right")} aria-label="Next">
+          <button className={`${ARROW_CLASSES} hidden md:flex w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("right")} aria-label="Next">
             {chevron("right")}
           </button>
         </div>
