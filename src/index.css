@@ -128,17 +128,17 @@ h1, h2, h3, h4, .font-serif {
 
 /* ── Fanned card carousel (card-fan-carousel.tsx) ── */
 /* Layout heights are kept in sync with getHeightMultiplier() in the component */
-.fan-layout { height: 24rem; }
-@media (min-width: 480px)  { .fan-layout { height: 26rem; } }
-@media (min-width: 640px)  { .fan-layout { height: 29rem; } }
-@media (min-width: 768px)  { .fan-layout { height: 33rem; } }
+.fan-layout { height: 26rem; touch-action: pan-y; }
+@media (min-width: 480px)  { .fan-layout { height: 28rem; } }
+@media (min-width: 640px)  { .fan-layout { height: 31rem; } }
+@media (min-width: 768px)  { .fan-layout { height: 35rem; } }
 @media (min-width: 1024px) { .fan-layout { height: 40rem; } }
 
 .fan-card {
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 7.5rem;
+  width: 8.75rem;
   aspect-ratio: 100 / 190; /* tall portrait cards, ~1:2 like the reference */
   border-radius: 1.25rem;
   overflow: hidden;
@@ -148,7 +148,17 @@ h1, h2, h3, h4, .font-serif {
   will-change: transform;
   opacity: 0; /* gsap fades cards in on mount; avoids a flash of stacked cards */
 }
-@media (min-width: 480px)  { .fan-card { width: 8.5rem; } }
-@media (min-width: 640px)  { .fan-card { width: 10rem; } }
-@media (min-width: 768px)  { .fan-card { width: 12rem; } }
+@media (min-width: 480px)  { .fan-card { width: 9.5rem; } }
+@media (min-width: 640px)  { .fan-card { width: 11rem; } }
+@media (min-width: 768px)  { .fan-card { width: 13rem; } }
 @media (min-width: 1024px) { .fan-card { width: 15rem; } }
+
+/* Braid-style caption shown under the fan; re-animates on label change */
+.fan-label {
+  display: inline-block;
+  animation: fan-label-in 0.35s ease-out both;
+}
+@keyframes fan-label-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
