@@ -2,7 +2,16 @@ import React from 'react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Language, View } from '../types';
-import { DICTIONARY, IMAGES } from '../data/content';
+import { DICTIONARY } from '../data/content';
+import { InfiniteSlider } from './ui/infinite-slider';
+
+// Salon photos served from /public/hero — scrolled by the infinite slider
+const HERO_IMAGES = [
+  '/hero/hero-red-portrait.jpg',
+  '/hero/hero-red-ombre.jpg',
+  '/hero/hero-cornrows-top.jpg',
+  '/hero/hero-bun-lady.jpg',
+];
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -27,33 +36,34 @@ export const Hero: React.FC<HeroProps> = ({ lang, onSelectView, onOpenBooking })
 
   return (
     <section className="relative min-h-[88vh] flex items-center overflow-hidden bg-[#332a24] text-white">
-      {/* ── Right-side editorial photo (desktop) ── */}
-      <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[46%] z-0" aria-hidden="true">
-        <img
-          src={IMAGES.heroPortrait}
-          alt=""
-          loading="eager"
-          className="w-full h-full object-cover hero-kb-1"
-          style={{ objectPosition: 'center 20%' }}
-        />
+      {/* ── Right-side scrolling photo columns (desktop) — 21st.dev infinite slider ── */}
+      <div className="hidden lg:flex absolute right-0 top-0 bottom-0 w-[46%] z-0 gap-4 px-4" aria-hidden="true">
+        <InfiniteSlider direction="vertical" duration={42} gap={16} className="h-full flex-1">
+          {HERO_IMAGES.map((src) => (
+            <img key={src} src={src} alt="" loading="eager" className="w-full aspect-[3/4] object-cover rounded-2xl" />
+          ))}
+        </InfiniteSlider>
+        <InfiniteSlider direction="vertical" reverse duration={52} gap={16} className="h-full flex-1">
+          {[...HERO_IMAGES].reverse().map((src) => (
+            <img key={src} src={src} alt="" loading="eager" className="w-full aspect-[3/4] object-cover rounded-2xl" />
+          ))}
+        </InfiniteSlider>
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'linear-gradient(to right, #332a24 0%, rgba(51,42,36,0.35) 38%, transparent 65%), linear-gradient(to top, rgba(38,30,25,0.55) 0%, transparent 40%)',
+              'linear-gradient(to right, #332a24 0%, rgba(51,42,36,0.25) 30%, transparent 55%), linear-gradient(to bottom, #332a24 0%, transparent 14%, transparent 86%, #332a24 100%)',
           }}
         />
       </div>
 
-      {/* ── Mobile photo background ── */}
-      <div className="lg:hidden absolute inset-0 z-0" aria-hidden="true">
-        <img
-          src={IMAGES.heroPortrait}
-          alt=""
-          loading="eager"
-          className="w-full h-full object-cover hero-kb-1"
-          style={{ objectPosition: 'center 20%' }}
-        />
+      {/* ── Mobile scrolling photo background ── */}
+      <div className="lg:hidden absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <InfiniteSlider direction="vertical" duration={70} gap={0} className="h-full w-full">
+          {HERO_IMAGES.map((src) => (
+            <img key={src} src={src} alt="" loading="eager" className="w-full object-cover" style={{ height: '60vh' }} />
+          ))}
+        </InfiniteSlider>
         <div className="absolute inset-0 bg-[#2a221c]/85" />
       </div>
 
