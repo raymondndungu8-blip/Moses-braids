@@ -50,21 +50,24 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Resizable shell: full-width bar at top, floating pill when scrolled */}
+      {/* Resizable shell: full-width bar at top, floating pill when scrolled.
+          Mobile-smooth: short tween instead of spring, inset via padding,
+          and transform-based shrinking of the inner elements. */}
+      <div className={`transition-[padding] duration-300 ${scrolled ? 'px-3 sm:px-4' : 'px-0'}`}>
       <motion.div
         className="mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8"
-        style={{ backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
+        style={{ backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}
         animate={{
           maxWidth: scrolled ? '62rem' : '100%',
-          marginTop: scrolled ? 10 : 0,
-          height: scrolled ? 58 : 80,
+          marginTop: scrolled ? 8 : 0,
+          height: scrolled ? 56 : 76,
           borderRadius: scrolled ? 999 : 0,
           backgroundColor: scrolled ? 'rgba(250,245,238,0.88)' : 'rgba(250,245,238,0.92)',
           boxShadow: scrolled
             ? '0 8px 32px rgba(58,48,42,0.16), 0 0 0 1px rgba(58,48,42,0.06)'
             : '0 1px 0 rgba(58,48,42,0.08)',
         }}
-        transition={{ type: 'spring', stiffness: 200, damping: 40 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
       >
         {/* Brand */}
         <button
@@ -72,36 +75,28 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="flex items-center gap-3 text-left group focus:outline-none shrink-0"
         >
           <motion.div
-            className="rounded-full bg-[#c2652a] text-white flex items-center justify-center font-serif font-bold shadow-sm"
-            animate={{ width: scrolled ? 34 : 40, height: scrolled ? 34 : 40 }}
-            transition={{ duration: 0.3 }}
+            className="w-10 h-10 rounded-full bg-[#c2652a] text-white flex items-center justify-center font-serif font-bold shadow-sm text-xl origin-center"
+            animate={{ scale: scrolled ? 0.85 : 1 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
             whileHover={{ scale: 1.08 }}
-            style={{ fontSize: scrolled ? 15 : 20 }}
           >
             M
           </motion.div>
           <div>
             <motion.span
-              className="font-serif font-semibold tracking-wide text-[#3a302a] block leading-none"
-              animate={{ fontSize: scrolled ? '1.25rem' : '1.5rem' }}
-              transition={{ duration: 0.3 }}
+              className="font-serif text-2xl font-semibold tracking-wide text-[#3a302a] block leading-none origin-left"
+              animate={{ scale: scrolled ? 0.85 : 1 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
             >
               MOSES
             </motion.span>
-            <AnimatePresence initial={false}>
-              {!scrolled && (
-                <motion.span
-                  key="sub"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-[10px] uppercase tracking-widest text-[#78706a] block mt-1 overflow-hidden"
-                >
-                  4400 Steyr
-                </motion.span>
-              )}
-            </AnimatePresence>
+            <span
+              className={`text-[10px] uppercase tracking-widest text-[#78706a] block overflow-hidden transition-all duration-200 ${
+                scrolled ? 'opacity-0 max-h-0 mt-0' : 'opacity-100 max-h-4 mt-1'
+              }`}
+            >
+              4400 Steyr
+            </span>
           </div>
         </button>
 
@@ -161,8 +156,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <motion.button
             onClick={() => { onSelectView('services'); onOpenBooking(); }}
-            className="flex items-center gap-2 rounded-full bg-[#3a302a] text-white text-xs uppercase tracking-wider font-semibold hover:bg-[#c2652a] transition-colors shadow-md"
-            animate={{ paddingLeft: scrolled ? 16 : 20, paddingRight: scrolled ? 16 : 20, paddingTop: scrolled ? 8 : 10, paddingBottom: scrolled ? 8 : 10 }}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#3a302a] text-white text-xs uppercase tracking-wider font-semibold hover:bg-[#c2652a] transition-colors shadow-md origin-center"
+            animate={{ scale: scrolled ? 0.92 : 1 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
             whileHover={{ scale: 1.04, y: -1 }}
             whileTap={{ scale: 0.96 }}
           >
@@ -196,6 +192,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </motion.button>
         </div>
       </motion.div>
+      </div>
 
       {/* Mobile Menu — follows the pill when scrolled */}
       <AnimatePresence>
