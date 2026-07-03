@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, ArrowUpRight, MapPin } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Language, View } from '../types';
 import { DICTIONARY, IMAGES } from '../data/content';
@@ -87,15 +87,6 @@ export const Hero: React.FC<HeroProps> = ({ lang, onSelectView, onOpenBooking })
           initial="hidden"
           animate="visible"
         >
-          {/* Location badge */}
-          <motion.div
-            variants={fadeUp}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-[11px] uppercase tracking-widest text-[#fbe8d8] mb-8"
-          >
-            <MapPin className="w-3.5 h-3.5 text-[#e08850]" />
-            <span>{t.addressBadge}</span>
-          </motion.div>
-
           {/* Small salon label */}
           <motion.p
             variants={fadeUp}
