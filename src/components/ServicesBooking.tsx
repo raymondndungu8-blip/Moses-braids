@@ -61,7 +61,7 @@ export const ServicesBooking: React.FC<ServicesBookingProps> = ({
   };
 
   return (
-    <section className="py-24 bg-[#faf5ee]" id="booking-widget">
+    <section className="pt-14 pb-24 sm:pt-16 bg-[#faf5ee]" id="booking-widget">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Title */}
