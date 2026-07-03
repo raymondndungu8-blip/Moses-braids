@@ -27,6 +27,7 @@ export const FannedGallery = ({ lang }: FannedGalleryProps) => {
   const cards: CardItem[] = FAN_IMAGES.map((c) => ({
     imgUrl: c.img,
     alt: `${lang === 'de' ? c.de : c.en} — Moses Braids`,
+    label: lang === 'de' ? c.de : c.en,
   }));
 
   return (
@@ -47,8 +48,8 @@ export const FannedGallery = ({ lang }: FannedGalleryProps) => {
         </h3>
         <p className="text-[#9a9088] text-xs sm:text-sm mt-2">
           {lang === 'de'
-            ? 'Fahren Sie über die Karten und blättern Sie mit den Pfeilen durch alle Arbeiten'
-            : 'Hover the cards and use the arrows to browse all our work'}
+            ? 'Wischen Sie durch unsere Looks – jeder Stil wird unter dem Fächer angezeigt'
+            : 'Swipe through our looks — each braid style is named below the fan'}
         </p>
       </motion.div>
 
