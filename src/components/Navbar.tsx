@@ -4,6 +4,11 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Language, View } from '../types';
 import { DICTIONARY } from '../data/content';
 
+// Navbar redesign:
+// - Look: Dribbble floating-pill navigation (detached rounded glass bar)
+// - Motion: 21st.dev @aceternity/resizable-navbar (full bar shrinks into a
+//   floating pill on scroll) + tubelight-style active indicator
+
 interface NavbarProps {
   currentView: View;
   onSelectView: (view: View) => void;
@@ -21,10 +26,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hovered, setHovered] = useState<View | null>(null);
   const t = DICTIONARY[lang].nav;
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 40);
+    const handler = () => setScrolled(window.scrollY > 80);
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
   }, []);
@@ -43,70 +49,107 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <motion.header
-      className="sticky top-0 z-50 border-b border-[#ece6dc]"
-      animate={{
-        backgroundColor: scrolled ? 'rgba(250,245,238,0.97)' : 'rgba(250,245,238,0.90)',
-        boxShadow: scrolled
-          ? '0 2px 24px rgba(58,48,42,0.10)'
-          : '0 1px 0 rgba(58,48,42,0.04)',
-      }}
-      transition={{ duration: 0.3 }}
-    >
-      <div
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between transition-all duration-300"
-        style={{ height: scrolled ? '60px' : '80px' }}
+    <header className="sticky top-0 z-50">
+      {/* Resizable shell: full-width bar at top, floating pill when scrolled */}
+      <motion.div
+        className="mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8"
+        style={{ backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
+        animate={{
+          maxWidth: scrolled ? '62rem' : '100%',
+          marginTop: scrolled ? 10 : 0,
+          height: scrolled ? 58 : 80,
+          borderRadius: scrolled ? 999 : 0,
+          backgroundColor: scrolled ? 'rgba(250,245,238,0.88)' : 'rgba(250,245,238,0.92)',
+          boxShadow: scrolled
+            ? '0 8px 32px rgba(58,48,42,0.16), 0 0 0 1px rgba(58,48,42,0.06)'
+            : '0 1px 0 rgba(58,48,42,0.08)',
+        }}
+        transition={{ type: 'spring', stiffness: 200, damping: 40 }}
       >
         {/* Brand */}
         <button
           onClick={() => handleNavClick('home')}
-          className="flex items-center gap-3 text-left group focus:outline-none"
+          className="flex items-center gap-3 text-left group focus:outline-none shrink-0"
         >
           <motion.div
             className="rounded-full bg-[#c2652a] text-white flex items-center justify-center font-serif font-bold shadow-sm"
-            animate={{ width: scrolled ? 36 : 40, height: scrolled ? 36 : 40 }}
+            animate={{ width: scrolled ? 34 : 40, height: scrolled ? 34 : 40 }}
             transition={{ duration: 0.3 }}
             whileHover={{ scale: 1.08 }}
-            style={{ fontSize: scrolled ? 16 : 20 }}
+            style={{ fontSize: scrolled ? 15 : 20 }}
           >
             M
           </motion.div>
           <div>
-            <span className="font-serif text-2xl font-semibold tracking-wide text-[#3a302a] block leading-none">MOSES</span>
-            <span className="text-[10px] uppercase tracking-widest text-[#78706a] block mt-1">4400 Steyr</span>
+            <motion.span
+              className="font-serif font-semibold tracking-wide text-[#3a302a] block leading-none"
+              animate={{ fontSize: scrolled ? '1.25rem' : '1.5rem' }}
+              transition={{ duration: 0.3 }}
+            >
+              MOSES
+            </motion.span>
+            <AnimatePresence initial={false}>
+              {!scrolled && (
+                <motion.span
+                  key="sub"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-[10px] uppercase tracking-widest text-[#78706a] block mt-1 overflow-hidden"
+                >
+                  4400 Steyr
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
         </button>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Desktop Nav — hover pill + tubelight active indicator */}
+        <nav className="hidden md:flex items-center gap-1" onMouseLeave={() => setHovered(null)}>
           {navItems.map((item) => {
             const active = currentView === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`text-sm tracking-wide font-medium relative py-2 transition-colors ${
+                onMouseEnter={() => setHovered(item.id)}
+                className={`relative px-4 py-2 text-sm tracking-wide font-medium rounded-full transition-colors ${
                   active ? 'text-[#c2652a]' : 'text-[#605850] hover:text-[#3a302a]'
                 }`}
               >
-                {item.label}
-                {active && (
+                {hovered === item.id && !active && (
                   <motion.span
-                    layoutId="nav-underline"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#c2652a] rounded-full"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    layoutId="nav-hover"
+                    className="absolute inset-0 rounded-full bg-[#f2ece4]"
+                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                   />
                 )}
+                {active && (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-0 rounded-full bg-[#fbe8d8]"
+                    transition={{ type: 'spring', stiffness: 320, damping: 30 }}
+                  >
+                    {/* Tubelight bar + glow */}
+                    <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-[#c2652a] rounded-full">
+                      <span className="absolute w-12 h-5 bg-[#c2652a]/25 rounded-full blur-md -top-2 -left-2" />
+                      <span className="absolute w-8 h-5 bg-[#c2652a]/25 rounded-full blur-md -top-1" />
+                      <span className="absolute w-4 h-3 bg-[#c2652a]/25 rounded-full blur-sm top-0 left-2" />
+                    </span>
+                  </motion.span>
+                )}
+                <span className="relative z-10">{item.label}</span>
               </button>
             );
           })}
         </nav>
 
         {/* Right controls */}
-        <div className="hidden sm:flex items-center gap-4">
+        <div className="hidden sm:flex items-center gap-3 shrink-0">
           <motion.button
             onClick={onToggleLang}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#d8d0c8] bg-white text-xs font-semibold text-[#3a302a] hover:border-[#c2652a] transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#d8d0c8] bg-white/70 text-xs font-semibold text-[#3a302a] hover:border-[#c2652a] transition-colors"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
           >
@@ -118,7 +161,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <motion.button
             onClick={() => { onSelectView('services'); onOpenBooking(); }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#3a302a] text-white text-xs uppercase tracking-wider font-semibold hover:bg-[#c2652a] transition-colors shadow-md"
+            className="flex items-center gap-2 rounded-full bg-[#3a302a] text-white text-xs uppercase tracking-wider font-semibold hover:bg-[#c2652a] transition-colors shadow-md"
+            animate={{ paddingLeft: scrolled ? 16 : 20, paddingRight: scrolled ? 16 : 20, paddingTop: scrolled ? 8 : 10, paddingBottom: scrolled ? 8 : 10 }}
             whileHover={{ scale: 1.04, y: -1 }}
             whileTap={{ scale: 0.96 }}
           >
@@ -129,7 +173,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Mobile toggle */}
         <div className="flex items-center gap-3 md:hidden">
-          <button onClick={onToggleLang} className="px-2.5 py-1 rounded-full border border-[#d8d0c8] bg-white text-xs font-semibold text-[#3a302a]">
+          <button onClick={onToggleLang} className="px-2.5 py-1 rounded-full border border-[#d8d0c8] bg-white/70 text-xs font-semibold text-[#3a302a]">
             {lang.toUpperCase()}
           </button>
           <motion.button
@@ -151,9 +195,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             </AnimatePresence>
           </motion.button>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — follows the pill when scrolled */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -162,7 +206,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-            className="md:hidden bg-[#faf5ee] border-b border-[#ece6dc] overflow-hidden"
+            className={`md:hidden bg-[#faf5ee]/95 backdrop-blur-xl overflow-hidden ${
+              scrolled
+                ? 'mx-3 mt-2 rounded-2xl border border-[#ece6dc] shadow-xl'
+                : 'border-b border-[#ece6dc]'
+            }`}
           >
             <div className="px-6 py-6 flex flex-col space-y-1">
               {navItems.map((item, i) => (
@@ -197,6 +245,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 };
