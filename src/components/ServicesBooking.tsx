@@ -122,65 +122,80 @@ export const ServicesBooking: React.FC<ServicesBookingProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
           {SERVICE_ITEMS.map((service) => {
             const isSelected = bookingState.selectedService?.id === service.id;
+            const title = lang === 'de' ? service.titleDe : service.titleEn;
             return (
               <div
                 key={service.id}
                 onClick={() => handleServiceSelect(service)}
-                className={`relative rounded-3xl p-8 transition-all duration-300 cursor-pointer border flex flex-col justify-between ${
+                className={`group relative rounded-3xl overflow-hidden transition-all duration-300 cursor-pointer border flex flex-col justify-between min-h-[30rem] ${
                   isSelected
-                    ? 'bg-white border-[#c2652a] ring-2 ring-[#c2652a]/20 shadow-xl scale-[1.01]'
-                    : 'bg-[#f2ece4] border-[#ece6dc] hover:border-[#9a9088] shadow-sm'
+                    ? 'border-[#c2652a] ring-2 ring-[#c2652a]/50 shadow-2xl scale-[1.01]'
+                    : 'border-white/10 hover:border-[#e08850]/50 shadow-lg'
                 }`}
               >
-                {service.popular && (
-                  <span className="absolute top-6 right-6 px-3 py-1 rounded-full bg-[#c2652a] text-white text-[10px] font-bold uppercase tracking-wider">
-                    {lang === 'de' ? 'Beliebt' : 'Popular'}
-                  </span>
+                {/* Braid reference photo as the card wallpaper */}
+                {service.image && (
+                  <img
+                    src={service.image}
+                    alt={title}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
                 )}
+                {/* Warm dark scrim keeps the copy readable over any photo */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#241d19]/96 via-[#241d19]/82 to-[#241d19]/58" />
+                <div className="absolute inset-0 mix-blend-soft-light opacity-30 bg-gradient-to-br from-[#e08850] to-transparent" />
 
-                <div>
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="font-serif text-3xl font-semibold text-[#3a302a]">
-                        {lang === 'de' ? service.titleDe : service.titleEn}
+                {/* Content */}
+                <div className="relative z-10 p-8 flex flex-col justify-between h-full">
+                  {service.popular && (
+                    <span className="absolute top-8 right-8 px-3 py-1 rounded-full bg-[#c2652a] text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
+                      {lang === 'de' ? 'Beliebt' : 'Popular'}
+                    </span>
+                  )}
+
+                  <div>
+                    <div className="mb-4">
+                      <h3 className="font-serif text-3xl font-semibold text-white drop-shadow">
+                        {title}
                       </h3>
-                      <div className="flex items-center gap-2 text-xs text-[#78706a] mt-1 font-medium">
-                        <Clock className="w-3.5 h-3.5 text-[#c2652a]" />
+                      <div className="flex items-center gap-2 text-xs text-[#eae2da] mt-1 font-medium">
+                        <Clock className="w-3.5 h-3.5 text-[#f0a878]" />
                         <span>{lang === 'de' ? service.durationDe : service.durationEn}</span>
                       </div>
                     </div>
+
+                    <div className="mb-6 font-serif text-3xl font-normal text-[#f0a878] drop-shadow">
+                      {lang === 'de' ? service.priceLabelDe : service.priceLabelEn}
+                    </div>
+
+                    <p className="text-sm text-[#eae2da]/90 font-light leading-relaxed mb-8">
+                      {lang === 'de' ? service.descriptionDe : service.descriptionEn}
+                    </p>
+
+                    <ul className="space-y-2.5 mb-8 border-t border-white/15 pt-6">
+                      {(lang === 'de' ? service.featuresDe : service.featuresEn).map((feat, i) => (
+                        <li key={i} className="flex items-start gap-2.5 text-xs text-[#f3ede5]">
+                          <Check className="w-4 h-4 text-[#f0a878] flex-shrink-0 mt-0.5" />
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
-                  <div className="mb-6 font-serif text-3xl font-normal text-[#c2652a]">
-                    {lang === 'de' ? service.priceLabelDe : service.priceLabelEn}
+                  <div className="pt-4">
+                    <button
+                      type="button"
+                      className={`w-full py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+                        isSelected
+                          ? 'bg-[#c2652a] text-white shadow-md'
+                          : 'bg-white/95 text-[#3a302a] hover:bg-[#c2652a] hover:text-white'
+                      }`}
+                    >
+                      <span>{isSelected ? (lang === 'de' ? 'Ausgewählt' : 'Selected') : t.bookBtn}</span>
+                      {isSelected && <Sparkles className="w-4 h-4" />}
+                    </button>
                   </div>
-
-                  <p className="text-sm text-[#605850] font-light leading-relaxed mb-8">
-                    {lang === 'de' ? service.descriptionDe : service.descriptionEn}
-                  </p>
-
-                  <ul className="space-y-2.5 mb-8 border-t border-[#ece6dc] pt-6">
-                    {(lang === 'de' ? service.featuresDe : service.featuresEn).map((feat, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-xs text-[#3a302a]">
-                        <Check className="w-4 h-4 text-[#c2652a] flex-shrink-0 mt-0.5" />
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="pt-4">
-                  <button
-                    type="button"
-                    className={`w-full py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
-                      isSelected
-                        ? 'bg-[#c2652a] text-white shadow-md'
-                        : 'bg-[#3a302a] text-white hover:bg-[#c2652a]'
-                    }`}
-                  >
-                    <span>{isSelected ? (lang === 'de' ? 'Ausgewählt' : 'Selected') : t.bookBtn}</span>
-                    {isSelected && <Sparkles className="w-4 h-4" />}
-                  </button>
                 </div>
               </div>
             );
