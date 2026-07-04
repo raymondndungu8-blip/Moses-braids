@@ -5,6 +5,7 @@ import { Hero } from './components/Hero';
 import { Specialties } from './components/Specialties';
 import { StudioExperience } from './components/StudioExperience';
 import { PortfolioGrid } from './components/PortfolioGrid';
+import { ServicesBooking } from './components/ServicesBooking';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
 import { WhatsAppButton } from './components/WhatsAppButton';
@@ -61,6 +62,12 @@ export function App() {
               onSelectView={setCurrentView}
             />
             <StudioExperience lang={lang} />
+          </div>
+        )}
+
+        {currentView === 'services' && (
+          <div className="pt-8">
+            <ServicesBooking lang={lang} />
           </div>
         )}
       </main>
