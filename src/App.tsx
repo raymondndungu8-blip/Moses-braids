@@ -52,6 +52,7 @@ export function App() {
               lang={lang}
               onSelectView={setCurrentView}
             />
+            <ServicesBooking lang={lang} />
           </>
         )}
 
