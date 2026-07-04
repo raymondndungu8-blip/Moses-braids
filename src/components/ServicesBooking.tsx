@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Check, Clock, Sparkles, AlertCircle } from 'lucide-react';
+import { Check, Clock, Sparkles, AlertCircle, Send } from 'lucide-react';
 import { BookingState, Language, ServiceItem } from '../types';
 import { DICTIONARY, SERVICE_ITEMS } from '../data/content';
 
+const WHATSAPP_NUMBER = '4367799015819';
+
 interface ServicesBookingProps {
   lang: Language;
-  onOpenModal: (bookingState: BookingState) => void;
   preselectedServiceId?: string | null;
 }
 
 export const ServicesBooking: React.FC<ServicesBookingProps> = ({
   lang,
-  onOpenModal,
   preselectedServiceId
 }) => {
   const t = DICTIONARY[lang].servicesPage;
@@ -58,6 +58,47 @@ export const ServicesBooking: React.FC<ServicesBookingProps> = ({
   const calculateTotal = () => {
     if (!bookingState.selectedService) return 0;
     return bookingState.selectedService.priceStart + bookingState.lengthAddonPrice;
+  };
+
+  // Proceed → open WhatsApp chat with Moses, session details pre-filled,
+  // so every request lands directly in his WhatsApp.
+  const handleWhatsAppProceed = () => {
+    const s = bookingState.selectedService;
+    if (!s) return;
+    const styleName = lang === 'de' ? s.titleDe : s.titleEn;
+    let lengthLabel = t.lengthOptions.shoulder;
+    if (bookingState.hairLength === 'mid-back') lengthLabel = t.lengthOptions.midBack;
+    if (bookingState.hairLength === 'waist') lengthLabel = t.lengthOptions.waist;
+    if (bookingState.hairLength === 'buttocks') lengthLabel = t.lengthOptions.buttocks;
+    const lengthShort = lengthLabel.split('(')[0].trim();
+
+    const lines =
+      lang === 'de'
+        ? [
+            'Hallo Moses! 👋 Ich möchte gerne einen Termin buchen:',
+            '',
+            `💇 Stil: ${styleName}`,
+            `📅 Datum: ${bookingState.selectedDate}`,
+            `🕐 Uhrzeit: ${bookingState.selectedTime}`,
+            `📏 Haarlänge: ${lengthShort}`,
+            `💰 Geschätzter Preis: €${calculateTotal()}`,
+            '',
+            'Mein Name: ',
+          ]
+        : [
+            'Hello Moses! 👋 I would like to book a session:',
+            '',
+            `💇 Style: ${styleName}`,
+            `📅 Date: ${bookingState.selectedDate}`,
+            `🕐 Time: ${bookingState.selectedTime}`,
+            `📏 Hair length: ${lengthShort}`,
+            `💰 Estimated price: €${calculateTotal()}`,
+            '',
+            'My name: ',
+          ];
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
+    window.open(url, '_blank', 'noopener');
   };
 
   return (
@@ -277,14 +318,15 @@ export const ServicesBooking: React.FC<ServicesBookingProps> = ({
               </span>
             </div>
 
-            {/* Submit to Modal */}
+            {/* Proceed → WhatsApp chat with the session details */}
             <button
               type="button"
-              onClick={() => onOpenModal(bookingState)}
+              onClick={handleWhatsAppProceed}
               disabled={!bookingState.selectedService}
-              className="w-full py-5 rounded-full bg-[#c2652a] hover:bg-[#3a302a] text-white font-bold text-xs uppercase tracking-widest shadow-xl hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.99]"
+              className="w-full py-5 rounded-full bg-[#25D366] hover:bg-[#3a302a] text-white font-bold text-xs uppercase tracking-widest shadow-xl hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.99] flex items-center justify-center gap-2"
             >
-              {t.continueBooking}
+              <Send className="w-4 h-4" />
+              {lang === 'de' ? 'Anfrage per WhatsApp senden' : 'Send request via WhatsApp'}
             </button>
 
           </div>
