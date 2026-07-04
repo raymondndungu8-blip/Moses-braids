@@ -9,6 +9,8 @@ import { DICTIONARY } from '../data/content';
 // - Motion: 21st.dev @aceternity/resizable-navbar (full bar shrinks into a
 //   floating pill on scroll) + tubelight-style active indicator
 
+const WHATSAPP_NUMBER = '4367799015819';
+
 interface NavbarProps {
   currentView: View;
   onSelectView: (view: View) => void;
@@ -43,6 +45,20 @@ export const Navbar: React.FC<NavbarProps> = ({
     onSelectView(view);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Book Now → open a WhatsApp chat with Moses directly (no configurator step)
+  const handleBookNow = () => {
+    setMobileMenuOpen(false);
+    const msg =
+      lang === 'de'
+        ? 'Hallo Moses! 👋 Ich möchte gerne einen Termin buchen. Können Sie mir Ihre freien Zeiten nennen?'
+        : "Hello Moses! 👋 I'd like to book a braiding session — what are your available times?";
+    window.open(
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,
+      '_blank',
+      'noopener'
+    );
   };
 
   return (
@@ -152,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </motion.button>
 
           <motion.button
-            onClick={() => handleNavClick('services')}
+            onClick={handleBookNow}
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#3a302a] text-white text-xs uppercase tracking-wider font-semibold hover:bg-[#c2652a] transition-colors shadow-md origin-center"
             animate={{ scale: scrolled ? 0.92 : 1 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
@@ -228,7 +244,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="pt-4 border-t border-[#ece6dc] mt-2"
               >
                 <button
-                  onClick={() => handleNavClick('services')}
+                  onClick={handleBookNow}
                   className="w-full py-3.5 rounded-full bg-[#c2652a] text-white font-semibold text-center uppercase tracking-wider text-xs flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
