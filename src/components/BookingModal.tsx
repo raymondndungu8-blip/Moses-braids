@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Calendar, Clock, CheckCircle2, Sparkles, Scissors } from 'lucide-react';
+import { X, Calendar, Clock, CheckCircle2, CalendarCheck, Scissors } from 'lucide-react';
 import { BookingState, Language } from '../types';
 import { DICTIONARY } from '../data/content';
 
@@ -167,7 +167,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 disabled={submitting}
                 className="w-2/3 py-4 rounded-full bg-[#c2652a] hover:bg-[#3a302a] text-white text-xs font-bold uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2"
               >
-                <Sparkles className="w-4 h-4" />
+                <CalendarCheck className="w-4 h-4" />
                 <span>{submitting ? '...' : t.confirmBtn}</span>
               </button>
             </div>

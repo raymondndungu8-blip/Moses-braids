@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Globe, Menu, X, Calendar } from 'lucide-react';
+import { CalendarCheck, Globe, Menu, X, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Language, View } from '../types';
 import { DICTIONARY } from '../data/content';
@@ -247,7 +247,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={handleBookNow}
                   className="w-full py-3.5 rounded-full bg-[#c2652a] text-white font-semibold text-center uppercase tracking-wider text-xs flex items-center justify-center gap-2"
                 >
-                  <Sparkles className="w-4 h-4" />
+                  <CalendarCheck className="w-4 h-4" />
                   {t.bookNow}
                 </button>
               </motion.div>

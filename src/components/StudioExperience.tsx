@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Coffee, Wifi, Sparkles, CheckCircle2, Star } from 'lucide-react';
+import { Heart, Coffee, Wifi, Gem, CheckCircle2, Star } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Language } from '../types';
 import { DICTIONARY, IMAGES, TESTIMONIALS } from '../data/content';
@@ -30,7 +30,7 @@ export const StudioExperience: React.FC<StudioExperienceProps> = ({ lang }) => {
             transition={{ duration: 0.75, ease }}
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c2652a]/10 text-[#c2652a] text-xs font-bold uppercase tracking-widest">
-              <Sparkles className="w-3 h-3" />
+              <Gem className="w-3 h-3" />
               <span>{t.tag}</span>
             </div>
             <h2 className="font-serif text-4xl sm:text-5xl font-normal text-[#3a302a] leading-tight">{t.title}</h2>

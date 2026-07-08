@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight, ShieldCheck, Sparkles, Feather } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, Grid3x3, Feather } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Language, View } from '../types';
 import { DICTIONARY, IMAGES } from '../data/content';
@@ -23,7 +23,7 @@ export const Specialties: React.FC<SpecialtiesProps> = ({ lang, onSelectView }) 
 
   const items = [
     { title: t.knotlessTitle, desc: t.knotlessDesc, img: IMAGES.knotlessSpec, badge: lang === 'de' ? 'Höchster Tragekomfort' : 'Ultra Comfortable', icon: Feather },
-    { title: t.cornrowsTitle, desc: t.cornrowsDesc, img: IMAGES.cornrowsSpec, badge: lang === 'de' ? 'Präzisions-Muster' : 'Symmetrical Art', icon: Sparkles },
+    { title: t.cornrowsTitle, desc: t.cornrowsDesc, img: IMAGES.cornrowsSpec, badge: lang === 'de' ? 'Präzisions-Muster' : 'Symmetrical Art', icon: Grid3x3 },
     { title: t.passionTitle, desc: t.passionDesc, img: IMAGES.passionTwistsSpec, badge: lang === 'de' ? 'Boho & Seidig' : 'Boho Chic', icon: ShieldCheck }
   ];
 

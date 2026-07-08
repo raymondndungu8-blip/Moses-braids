@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, Clock, Sparkles, AlertCircle, Send } from 'lucide-react';
+import { Check, Clock, Receipt, AlertCircle, Send } from 'lucide-react';
 import { BookingState, Language, ServiceItem } from '../types';
 import { DICTIONARY, SERVICE_ITEMS } from '../data/content';
 
@@ -193,7 +193,7 @@ export const ServicesBooking: React.FC<ServicesBookingProps> = ({
                       }`}
                     >
                       <span>{isSelected ? (lang === 'de' ? 'Ausgewählt' : 'Selected') : t.bookBtn}</span>
-                      {isSelected && <Sparkles className="w-4 h-4" />}
+                      {isSelected && <Check className="w-4 h-4" />}
                     </button>
                   </div>
                 </div>
@@ -298,7 +298,7 @@ export const ServicesBooking: React.FC<ServicesBookingProps> = ({
             <div className="bg-white rounded-2xl p-6 border border-[#d8d0c8] flex flex-col sm:flex-row items-center justify-between gap-6 mb-8 shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#fbe8d8] flex items-center justify-center text-[#c2652a]">
-                  <Sparkles className="w-5 h-5" />
+                  <Receipt className="w-5 h-5" />
                 </div>
                 <div>
                   <span className="text-xs uppercase tracking-wider text-[#78706a] block font-semibold">
